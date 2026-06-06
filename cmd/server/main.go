@@ -1,13 +1,12 @@
-// Command server is Stocker's entrypoint. For now it runs a one-shot smoke test
-// of the concurrent pipe (stub -> worker -> orchestrator -> report); it becomes
-// the HTTP server in the next step.
+// Command server is Stocker's entrypoint: it wires the tool, workers,
+// orchestrator, and HTTP API together and serves the JSON API.
 package main
 
 import (
-	"context"
-	"fmt"
-	"time"
+	"log"
+	"net/http"
 
+	"github.com/ronitgavaskar/stocker/internal/httpapi"
 	"github.com/ronitgavaskar/stocker/internal/orchestrator"
 	"github.com/ronitgavaskar/stocker/internal/tool"
 	"github.com/ronitgavaskar/stocker/internal/worker"
@@ -26,16 +25,11 @@ func main() {
 	}
 
 	boss := orchestrator.New(makeWorkers)
+	api := httpapi.NewHandler(boss)
 
-	// Run the concurrent pipe once and print the assembled report.
-	rep := boss.Assemble(context.Background(), "AAPL")
-
-	fmt.Printf("Report: %s   (generated %s)\n", rep.Ticker, rep.GeneratedAt.Format(time.RFC3339))
-	for _, s := range rep.Sections {
-		line := fmt.Sprintf("  %-10s %s", s.Kind, s.Status)
-		if s.Note != "" {
-			line += "  — " + s.Note
-		}
-		fmt.Println(line)
+	const addr = ":8080"
+	log.Printf("stocker listening on %s", addr)
+	if err := http.ListenAndServe(addr, api.Routes()); err != nil {
+		log.Fatalf("server stopped: %v", err)
 	}
 }

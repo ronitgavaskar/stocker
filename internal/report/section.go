@@ -1,5 +1,7 @@
 package report
 
+import "encoding/json"
+
 // Status is the outcome of a worker producing a Section. Its zero value is
 // StatusUnknown, so a Section nobody filled in never masquerades as success.
 type Status int
@@ -12,8 +14,8 @@ const (
 )
 
 // String renders a Status as a human-readable word for logs and demo output.
-// This is the DISPLAY stringer; the JSON-wire shape of Status is a separate
-// decision still deferred to the httpapi step.
+// This is the DISPLAY form, kept deliberately independent of the JSON wire form
+// (see MarshalJSON): log text can be reworded without breaking the API contract.
 func (s Status) String() string {
 	switch s {
 	case StatusOK:
@@ -27,13 +29,36 @@ func (s Status) String() string {
 	}
 }
 
+// MarshalJSON renders a Status as a lowercase string token on the wire. This is
+// an INDEPENDENT switch, deliberately NOT derived from String(): the JSON is an
+// API contract the frontend depends on, whereas String() is human-facing log
+// text that must be free to change without silently altering that contract.
+func (s Status) MarshalJSON() ([]byte, error) {
+	var token string
+	switch s {
+	case StatusOK:
+		token = "ok"
+	case StatusFlagged:
+		token = "flagged"
+	case StatusFailed:
+		token = "failed"
+	default:
+		token = "unknown"
+	}
+	return json.Marshal(token)
+}
+
 // Section is one worker's contribution to the report. A worker ALWAYS returns
 // a Section, never an error: a failure is just a Section with a failed/flagged
-// Status and a Note. Content (a Data field) is added in a later step.
+// Status and a Note.
+//
+// No field uses omitempty: kind/status/note are always present in the JSON
+// (note is "" when there's nothing to say) so the frontend never branches on
+// whether a field exists.
 type Section struct {
-	Kind   string // which section: "overview", "financial", ...
-	Status Status
-	Note   string // failure reason or caveat; empty when OK
+	Kind   string `json:"kind"`   // which section: "overview", "financial", ...
+	Status Status `json:"status"` // lowercase string on the wire (see MarshalJSON)
+	Note   string `json:"note"`   // failure reason or caveat; empty but always present
 
 	// TODO(data): add a `Data any` field to carry the section's content once
 	// a worker produces real fields. Deferred on purpose — adding an exported
