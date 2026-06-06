@@ -11,6 +11,22 @@ const (
 	StatusFailed                // no usable content; Note says why
 )
 
+// String renders a Status as a human-readable word for logs and demo output.
+// This is the DISPLAY stringer; the JSON-wire shape of Status is a separate
+// decision still deferred to the httpapi step.
+func (s Status) String() string {
+	switch s {
+	case StatusOK:
+		return "OK"
+	case StatusFlagged:
+		return "Flagged"
+	case StatusFailed:
+		return "Failed"
+	default:
+		return "Unknown"
+	}
+}
+
 // Section is one worker's contribution to the report. A worker ALWAYS returns
 // a Section, never an error: a failure is just a Section with a failed/flagged
 // Status and a Note. Content (a Data field) is added in a later step.
