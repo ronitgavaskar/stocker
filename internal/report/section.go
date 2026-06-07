@@ -52,15 +52,15 @@ func (s Status) MarshalJSON() ([]byte, error) {
 // a Section, never an error: a failure is just a Section with a failed/flagged
 // Status and a Note.
 //
-// No field uses omitempty: kind/status/note are always present in the JSON
-// (note is "" when there's nothing to say) so the frontend never branches on
-// whether a field exists.
+// No field uses omitempty: kind/status/note/data are always present in the JSON,
+// so the frontend never branches on whether a field exists. On success Data
+// holds the worker's content struct (a VALUE type, e.g. tool.Overview); on
+// failure Data is simply left unset, so it stays nil and marshals to null — not
+// {}. Using value types (not pointers) in Data also avoids the typed-nil-in-
+// interface trap, where a non-nil interface wrapping a nil pointer surprises you.
 type Section struct {
 	Kind   string `json:"kind"`   // which section: "overview", "financial", ...
 	Status Status `json:"status"` // lowercase string on the wire (see MarshalJSON)
 	Note   string `json:"note"`   // failure reason or caveat; empty but always present
-
-	// TODO(data): add a `Data any` field to carry the section's content once
-	// a worker produces real fields. Deferred on purpose — adding an exported
-	// field later is backward-compatible, so nothing breaks by waiting.
+	Data   any    `json:"data"`   // content struct on success; nil -> null on failure
 }

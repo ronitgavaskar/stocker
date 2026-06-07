@@ -10,12 +10,12 @@ import "context"
 //
 // Each field notes its Alpha Vantage source key (function=OVERVIEW).
 type Overview struct {
-	Ticker    string // AV: Symbol
-	Name      string // AV: Name
-	Summary   string // AV: Description
-	Sector    string // AV: Sector
-	Industry  string // AV: Industry
-	MarketCap int64  // AV: MarketCapitalization (string -> int64), USD
+	Ticker    string `json:"ticker"`    // AV: Symbol
+	Name      string `json:"name"`      // AV: Name
+	Summary   string `json:"summary"`   // AV: Description
+	Sector    string `json:"sector"`    // AV: Sector
+	Industry  string `json:"industry"`  // AV: Industry
+	MarketCap int64  `json:"marketCap"` // AV: MarketCapitalization (string -> int64), USD
 }
 
 // StubOverviewTool is a fake overview tool: it returns hardcoded AAPL data and

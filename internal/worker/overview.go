@@ -52,8 +52,7 @@ func (w *OverviewWorker) Run(ctx context.Context) report.Section {
 		return failedSection(overviewKind, err)
 	}
 
-	_ = ov // TODO(data): carry overview content once Section.Data exists
-	return report.Section{Kind: overviewKind, Status: report.StatusOK}
+	return report.Section{Kind: overviewKind, Status: report.StatusOK, Data: ov}
 }
 
 // failedSection turns any tool error into a failed Section instead of crashing —

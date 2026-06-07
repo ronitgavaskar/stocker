@@ -13,14 +13,21 @@ import (
 )
 
 func main() {
-	// Shared tool: constructed once, reused across requests and across workers.
-	stub := tool.StubOverviewTool{}
+	// Shared tools: constructed once, reused across requests and across workers.
+	overviewTool := tool.StubOverviewTool{}
+	financialTool := tool.StubFinancialTool{}
+	ownershipTool := tool.StubOwnershipTool{}
+	frothTool := tool.StubFrothTool{}
 
 	// The worker factory: main is the only place that knows the concrete
 	// workers. Called fresh per request so each worker carries that ticker.
+	// Slice order = report section order (overview, financial, ownership, froth).
 	makeWorkers := func(ticker string) []orchestrator.Worker {
 		return []orchestrator.Worker{
-			worker.NewOverview(stub, ticker),
+			worker.NewOverview(overviewTool, ticker),
+			worker.NewFinancial(financialTool, ticker),
+			worker.NewOwnership(ownershipTool, ticker),
+			worker.NewFroth(frothTool, ticker),
 		}
 	}
 
