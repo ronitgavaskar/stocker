@@ -1,0 +1,236 @@
+.app {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 3rem 1.25rem 4rem;
+}
+
+/* brand */
+.app__brand h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #1c1a14;
+}
+
+.app__brand p {
+  margin: 0.3rem 0 0;
+  color: #6f6a5e;
+  font-size: 0.95rem;
+}
+
+/* search */
+.search {
+  display: flex;
+  gap: 0.6rem;
+  margin: 1.5rem 0 2.25rem;
+}
+
+.search input {
+  flex: 1;
+  padding: 0.7rem 0.95rem;
+  font-family: inherit;
+  font-size: 1rem;
+  color: #211e18;
+  background: #fffefb;
+  border: 1px solid #ddd6c8;
+  border-radius: 9px;
+}
+
+.search input::placeholder {
+  color: #a8a294;
+}
+
+.search input:focus {
+  outline: none;
+  border-color: #9c9483;
+}
+
+.search button {
+  padding: 0.7rem 1.3rem;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f4f1ea;
+  background: #211e18;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.search button:disabled {
+  background: #b7b1a4;
+  cursor: default;
+}
+
+.app__status {
+  color: #6f6a5e;
+}
+
+.app__error {
+  color: #9a3b30;
+  font-style: italic;
+}
+
+/* outer report card — the "paper" */
+.report-card {
+  background: #fffefb;
+  border: 1px solid #e6e0d3;
+  border-radius: 16px;
+  padding: 1.75rem 1.85rem 1.9rem;
+  box-shadow: 0 1px 3px rgba(33, 30, 24, 0.05);
+}
+
+.report-card__head h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: #161410;
+}
+
+.report-card__sub {
+  margin: 0.35rem 0 0;
+  font-size: 0.9rem;
+  color: #6f6a5e;
+}
+
+.report-card__divider {
+  height: 1px;
+  background: #e6e0d3;
+  border: 0;
+  margin: 1.25rem 0 1.4rem;
+}
+
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+/* section card — grayscale tints, now legible against the white paper */
+.card {
+  border-radius: 12px;
+  padding: 1.1rem 1.2rem 1.2rem;
+  border: 1px solid #e8e3d7;
+  background: #ffffff;
+}
+
+.card--flagged {
+  background: #ece9e1;
+  border-color: #d9d3c4;
+}
+
+.card--failed {
+  background: #f2f0eb;
+  border-color: #e3ded2;
+}
+
+.card__title {
+  margin: 0 0 0.6rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1c1a14;
+}
+
+.card__note {
+  margin: 0 0 0.8rem;
+  font-style: italic;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: #5f5a4f;
+}
+
+.card--failed .card__note {
+  color: #8a857a;
+}
+
+/* key/value layout */
+.kv {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem 1rem;
+  margin: 0;
+}
+
+.kv > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.kv__full {
+  grid-column: 1 / -1;
+}
+
+.kv dt {
+  font-family: system-ui, sans-serif;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #8f8a7c;
+}
+
+.kv dd {
+  margin: 0.2rem 0 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #211e18;
+  font-variant-numeric: tabular-nums;
+}
+
+.kv__full dd {
+  font-weight: 400;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #45413a;
+}
+
+/* analyst ratings */
+.ratings {
+  margin-top: 0.95rem;
+  border-top: 1px solid #e6e0d3;
+  padding-top: 0.8rem;
+}
+
+.ratings__label {
+  font-family: system-ui, sans-serif;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #8f8a7c;
+}
+
+.ratings__list {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.ratings__list li {
+  display: flex;
+  gap: 0.4rem;
+  align-items: baseline;
+  background: #f4f2ec;
+  border: 1px solid #e6e1d6;
+  border-radius: 6px;
+  padding: 0.25rem 0.55rem;
+  font-size: 0.85rem;
+  color: #45413a;
+}
+
+.ratings__list strong {
+  color: #211e18;
+  font-variant-numeric: tabular-nums;
+}
+
+/* disclaimer */
+.app__disclaimer {
+  margin: 1.25rem 0 0;
+  font-size: 0.78rem;
+  font-style: italic;
+  color: #8f8a7c;
+  text-align: center;
+}
